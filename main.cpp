@@ -52,8 +52,6 @@ int main() {
         auto device = window.GetGraphicsDevice();
         Camera camera(45.0f, 400.0f / 300.0f, 0.1f, 100.0f);
         ConstantBuffer<SceneData> constantBuffer(device->GetDevice());
-        ConstantBuffer<FractalData> fractalBuffer(device->GetDevice());
-        Mandelbrot mandelbrot = Mandelbrot();
         float currentZoom = 2.0f; //
         DirectX::XMFLOAT2 currentOffset = { -0.5f, 0.0f }; //
         const float moveSpeed = 0.02f; //
@@ -77,24 +75,8 @@ int main() {
 
             game_loop.update([&]() {
 
-                // Controls Start
-				// Check for input and execute commands (not defined yet?); if no command, print the key
-                auto key = input_manager->GetAndConsumeKey();
-                if (key) {
-                    if (*key == 'w' || *key == 'W') currentOffset.y -= moveSpeed * currentZoom;
-                    if (*key == 's' || *key == 'S') currentOffset.y += moveSpeed * currentZoom;
-                    if (*key == 'a' || *key == 'A') currentOffset.x -= moveSpeed * currentZoom;
-                    if (*key == 'd' || *key == 'D') currentOffset.x += moveSpeed * currentZoom;
-
-                    // Zooming controls
-                    if (*key == 'z' || *key == 'Z') currentZoom *= 0.95f; // Zoom In
-                    if (*key == 'x' || *key == 'X') currentZoom *= 1.05f; // Zoom Out
-                }
-                
-
-
+           
                 device->BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
-
                 camera.Update();
                 SceneData sd;
                 sd.transform = DirectX::XMMatrixTranspose(camera.GetView() * camera.GetProjection());
