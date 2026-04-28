@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <stdexcept>
 #include "ConstantBuffer.h"
 #include "Graphics/Core/Device.h"
 #include "Graphics/Shaders/Shader.h"
@@ -15,8 +14,8 @@ class GraphicsManager {
 public:
 
 
-	Device device; 
-	Shader shader;
+	Device* device; 
+	std::unique_ptr<Shader> shader;
 	VertexBuffer vertexBuffer;
 	VertexBuffer flatBuffer;
 	VertexBuffer heightmapBuffer;
@@ -25,6 +24,8 @@ public:
 	FractalData fractalData;
 	int renderMode;
 
+	void LoadShaders();
 	void SwapVertexBuffer(int mode);
 	void BindShadersAndBuffers();
+	void DrawFrame(int mode);
 };

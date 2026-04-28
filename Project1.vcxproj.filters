@@ -155,6 +155,12 @@
     <ClInclude Include="Mandelbrot.h">
       <Filter>Header Files\Logic</Filter>
     </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="PixelShader.hlsl">

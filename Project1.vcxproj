@@ -165,6 +165,8 @@
     <ClInclude Include="KeyPressHandler.h" />
     <ClInclude Include="Mandelbrot.h" />
     <ClInclude Include="MouseDeltaHandler.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>

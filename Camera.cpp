@@ -3,7 +3,8 @@
 Camera::Camera(float fovDegrees, float aspectRatio, float nearZ, float farZ)
     : position(0.0f, 0.0f, -5.0f),
     target(0.0f, 0.0f, 0.0f),
-    up(0.0f, 1.0f, 0.0f)
+    up(0.0f, 1.0f, 0.0f),
+    view(DirectX::XMMatrixIdentity()) // Initialize view to identity matrix (MIGHT GIVE A WEIRD VIEW)
 {
     // Initialize the Projection Matrix (The Lens)
     projection = DirectX::XMMatrixPerspectiveFovLH(

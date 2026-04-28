@@ -11,9 +11,9 @@
 #include "KeyHistory.h"
 #include "CommandHandler.h"
 #include "ConstantBuffer.h"
-#include "Scene.cpp"
+#include "Scene.h"
 #include "Camera.h"
-#include "Mandelbrot.cpp"
+#include "Mandelbrot.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -54,16 +54,16 @@ int main() {
         ConstantBuffer<SceneData> constantBuffer(device->GetDevice());
         ConstantBuffer<FractalData> fractalBuffer(device->GetDevice());
         Mandelbrot mandelbrot = Mandelbrot();
-        float currentZoom = 2.0f;
-        DirectX::XMFLOAT2 currentOffset = { -0.5f, 0.0f };
-        const float moveSpeed = 0.02f;
+        float currentZoom = 2.0f; //
+        DirectX::XMFLOAT2 currentOffset = { -0.5f, 0.0f }; //
+        const float moveSpeed = 0.02f; //
         CommandHandler commands;
         GameLoop game_loop(60);
         bool running = true;
 
-        camera.position = DirectX::XMFLOAT3(5.0f, 5.0f, -5.0f); 
-        camera.target = DirectX::XMFLOAT3(0.0f, 0.0f, 15.0f); 
-        camera.up = DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f);
+        camera.position = DirectX::XMFLOAT3(5.0f, 5.0f, -5.0f);  //
+        camera.target = DirectX::XMFLOAT3(0.0f, 0.0f, 15.0f);  //
+        camera.up = DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f); //
 
         RegisterEngineCommands(commands, running, input_manager);
      
@@ -90,33 +90,8 @@ int main() {
                     if (*key == 'z' || *key == 'Z') currentZoom *= 0.95f; // Zoom In
                     if (*key == 'x' || *key == 'X') currentZoom *= 1.05f; // Zoom Out
                 }
+                
 
-				// Mouse Controls Start (Need to come out)
-                auto mouse_delta = input_manager->GetMouseDelta();
-
-                if (input_manager->IsRightMouseDown()) {
-                    const float sensitivity = 0.005f;
-
-                    camera.yaw += mouse_delta.x * sensitivity;
-                    camera.pitch -= mouse_delta.y * sensitivity;
-
-
-                    camera.pitch = std::max(-1.55f, std::min(1.55f, camera.pitch));
-
-
-                    DirectX::XMVECTOR forward = DirectX::XMVectorSet(
-                        cos(camera.pitch) * sin(camera.yaw),
-                        sin(camera.pitch),
-                        cos(camera.pitch) * cos(camera.yaw),
-                        0.0f
-                    );
-
-                    DirectX::XMVECTOR camPos = DirectX::XMLoadFloat3(&camera.position);
-                    DirectX::XMVECTOR newTarget = DirectX::XMVectorAdd(camPos, forward);
-                    DirectX::XMStoreFloat3(&camera.target, newTarget);
-                }
-                // Mouse Controls End (Need to come out)
-				// Controls End
 
                 device->BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 

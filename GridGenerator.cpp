@@ -1,7 +1,7 @@
 
 #include <vector>
 #include "VertexBuffer.h" // Assuming this holds your Vertex struct
-#include "Mandelbrot.cpp" // Your mandelbrot class
+#include "Mandelbrot.h" // Your mandelbrot class
 
 class GridFactory {
 

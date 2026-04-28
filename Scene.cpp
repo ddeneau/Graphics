@@ -1,11 +1,13 @@
-#include<directxmath.h>
+#include "Node.h"
 
-struct alignas(16) SceneData {
-    DirectX::XMMATRIX transform;
-};
+void Node::AddChild(std::shared_ptr<Node> child) {
+    m_children.push_back(child);
+}
 
-struct alignas(16) FractalData {
-    float time;
-    float zoom;
-    DirectX::XMFLOAT2 offset;
-};
+void Node::Update(const DirectX::XMMATRIX& parentTransform) {
+    m_globalTransform = m_localTransform * parentTransform;
+
+    for (auto& child : m_children) {
+        child->Update(m_globalTransform);
+    }
+}

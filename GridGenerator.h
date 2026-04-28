@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "VertexBuffer.h"
-#include "Mandelbrot.cpp"
+#include "Mandelbrot.h"
 
 class GridFactory {
 public:

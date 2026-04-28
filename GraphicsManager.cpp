@@ -1,7 +1,16 @@
 #include "GraphicsManager.h" // Link to the blueprint!
+#include <stdexcept>
+
+void GraphicsManager::LoadShaders() {
+    shader = std::make_unique<Shader>(
+        device->GetDevice(),
+        LoadShaderFromFile("VertexShader.hlsl"),
+        LoadShaderFromFile("PixelShader.hlsl")
+    );
+}
 
 // Use GraphicsManager:: to tell the compiler this is a class method
-void GraphicsManager::SwapVertexBuffer(int mode, Device device) {
+void GraphicsManager::SwapVertexBuffer(int mode) {
 
     // Because we used GraphicsManager::, the compiler knows exactly
     // what vertexBuffer, flatBuffer, and device are!
