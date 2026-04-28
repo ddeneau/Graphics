@@ -1,4 +1,4 @@
-// Module purpose: Application entry point and game loop orchestration.
+// Main entry point for the application; initializes window, graphics device, and game loop, then starts the main loop.
 #define NOMINMAX
 #include <iostream>
 #include "GameLoop.h"
@@ -81,9 +81,6 @@ int main() {
             LoadShaderFromFile("PixelShader.hlsl"));
 
 
-
-
-
         while (running && window.IsOpen()) {
             if (!window.ProcessMessages()) break;
 
@@ -102,23 +99,18 @@ int main() {
                     if (*key == 'x' || *key == 'X') currentZoom *= 1.05f; // Zoom Out
                 }
 
-				// FInish this line of C++ code so that it controls looking around when the right mouse button is held down. 
-                // You will need to use the mouse's delta movement to adjust the camera's position and target accordingly.
                 auto mouse_delta = input_manager->GetMouseDelta();
 
                 if (input_manager->IsRightMouseDown()) {
-                    // 1. Define mouse sensitivity
                     const float sensitivity = 0.005f;
 
-                    // 2. Adjust camera yaw (left/right) and pitch (up/down)
                     camera.yaw += mouse_delta.x * sensitivity;
-                    camera.pitch -= mouse_delta.y * sensitivity; // Subtracting standardizes standard "FPS" mouse Y-axis
+                    camera.pitch -= mouse_delta.y * sensitivity;
 
-                    // 3. Clamp the pitch to prevent the camera from flipping upside down
-                    // 1.55f is just under 90 degrees in radians (PI / 2)
+
                     camera.pitch = std::max(-1.55f, std::min(1.55f, camera.pitch));
 
-                    // 4. Calculate the new forward-facing vector using spherical coordinates
+
                     DirectX::XMVECTOR forward = DirectX::XMVectorSet(
                         cos(camera.pitch) * sin(camera.yaw),
                         sin(camera.pitch),
@@ -126,7 +118,6 @@ int main() {
                         0.0f
                     );
 
-                    // 5. Update the camera's target by adding the forward vector to its current position
                     DirectX::XMVECTOR camPos = DirectX::XMLoadFloat3(&camera.position);
                     DirectX::XMVECTOR newTarget = DirectX::XMVectorAdd(camPos, forward);
                     DirectX::XMStoreFloat3(&camera.target, newTarget);
@@ -134,7 +125,6 @@ int main() {
 
                 device->BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 
-                // Camera stuff
                 camera.Update();
                 SceneData sd;
                 sd.transform = DirectX::XMMatrixTranspose(camera.GetView() * camera.GetProjection());
