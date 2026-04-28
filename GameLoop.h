@@ -2,8 +2,6 @@
 #include <functional>
 #include <chrono>
 
-// Encapsulates fixed-timestep game loop execution with frame rate control.
-// Supports both continuous execution (run) and frame-by-frame control (update).
 class GameLoop {
 public:
     int frame;

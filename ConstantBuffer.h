@@ -2,6 +2,7 @@
 #include <d3d11.h>
 #include <wrl/client.h>
 #include <memory.h>
+#include <stdexcept>
 
 template<typename T>
 class ConstantBuffer {

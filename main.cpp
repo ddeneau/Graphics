@@ -12,7 +12,7 @@
 #include "CommandHandler.h"
 #include "ConstantBuffer.h"
 #include "Scene.cpp"
-#include "Camera.cpp"
+#include "Camera.h"
 #include "Mandelbrot.cpp"
 
 #pragma comment(lib, "d3d11.lib")
@@ -42,16 +42,7 @@ static void RegisterEngineCommands(CommandHandler& commands, bool& running, Inpu
     commands.register_command('\t', show_history);
 }
 
-void UpdateFractalPattern(Device* deviceIn, ConstantBuffer<FractalData>& buffer, DirectX::XMFLOAT2 offset, Mandelbrot mandelbrot, double x, double y, int frame, float zoom) {
-    mandelbrot.MandelbrotIteration(x, y, 100);
-    FractalData fd;
-    fd.time = float(frame * 0.05f);
-    fd.zoom = zoom;
-    fd.offset = offset;
 
-    buffer.Update(deviceIn->GetContext(), fd);
-    deviceIn->GetContext()->PSSetConstantBuffers(0, 1, buffer.GetAddressOf());
-}
 
 int main() {
 
@@ -86,6 +77,7 @@ int main() {
 
             game_loop.update([&]() {
 
+                // Controls Start
 				// Check for input and execute commands (not defined yet?); if no command, print the key
                 auto key = input_manager->GetAndConsumeKey();
                 if (key) {
@@ -99,6 +91,7 @@ int main() {
                     if (*key == 'x' || *key == 'X') currentZoom *= 1.05f; // Zoom Out
                 }
 
+				// Mouse Controls Start (Need to come out)
                 auto mouse_delta = input_manager->GetMouseDelta();
 
                 if (input_manager->IsRightMouseDown()) {
@@ -122,6 +115,8 @@ int main() {
                     DirectX::XMVECTOR newTarget = DirectX::XMVectorAdd(camPos, forward);
                     DirectX::XMStoreFloat3(&camera.target, newTarget);
                 }
+                // Mouse Controls End (Need to come out)
+				// Controls End
 
                 device->BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -130,6 +125,7 @@ int main() {
                 sd.transform = DirectX::XMMatrixTranspose(camera.GetView() * camera.GetProjection());
                 constantBuffer.Update(device->GetContext(), sd);
                 device->GetContext()->VSSetConstantBuffers(0, 1, constantBuffer.GetAddressOf()); // Bind to VS Slot 0
+                device->EndFrame();
                 });
         }
     }

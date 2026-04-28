@@ -1,6 +1,7 @@
 #pragma once
 #include <functional>
 #include <map>
+#include <stdexcept>
 
 class CommandHandler {
 public:

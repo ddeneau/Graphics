@@ -135,6 +135,7 @@
     <ClCompile Include="CommandHandler.cpp" />
     <ClCompile Include="GameLoop.cpp" />
     <ClCompile Include="GameWindow.cpp" />
+    <ClCompile Include="GraphicsManager.cpp" />
     <ClCompile Include="GraphicsManager.h" />
     <ClCompile Include="Graphics\Buffers\VertexBuffer.cpp" />
     <ClCompile Include="Graphics\Core\Device.cpp" />
@@ -144,11 +145,14 @@
     <ClCompile Include="GridGenerator.h" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="KeyHistory.cpp" />
+    <ClCompile Include="KeyPressHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mandelbrot.cpp" />
+    <ClCompile Include="MouseDeltaHandler.cpp" />
     <ClCompile Include="Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="CommandHandler.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="GameLoop.h" />
@@ -158,6 +162,9 @@
     <ClInclude Include="Graphics\Shaders\ShaderLoader.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="KeyHistory.h" />
+    <ClInclude Include="KeyPressHandler.h" />
+    <ClInclude Include="Mandelbrot.h" />
+    <ClInclude Include="MouseDeltaHandler.h" />
     <ClInclude Include="VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
