@@ -26,6 +26,18 @@ void Camera::Update() {
     );
 }
 
+DirectX::XMFLOAT3 Camera::GetTarget() {
+	return target;
+}
+
+DirectX::XMFLOAT3 Camera::GetPosition() {
+    return position;
+}
+
+DirectX::XMFLOAT3 Camera::GetUp() {
+    return up;
+}
+
 DirectX::XMMATRIX Camera::GetView() const {
     return view;
 }

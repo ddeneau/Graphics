@@ -23,6 +23,11 @@ public:
      * Update: Recalculates the View Matrix based on current position/target.
      */
     void Update();
+    DirectX::XMFLOAT3 GetTarget();
+    DirectX::XMFLOAT3 GetUp();
+    DirectX::XMFLOAT3 GetPosition();
+	void SetTarget(DirectX::XMFLOAT3 newTarget) { target = newTarget; }
+	void SetPosition(DirectX::XMFLOAT3 newPosition) { position = newPosition; }
 
     // Getters for the Scene manager
     DirectX::XMMATRIX GetView() const;

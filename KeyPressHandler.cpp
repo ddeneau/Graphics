@@ -1,24 +1,59 @@
 // Handles all key presses and their effects on the program (needs to be taken out of main and abstracted in)
 #include "KeyPressHandler.h"
 #include <iostream>
+#include <DirectXMath.h>
+
+using namespace DirectX;
+
+void KeyPressHandler::ApplyFPSMovement(InputManager* inputManager, Camera& camera, float speed) {
+    auto key = inputManager->GetAndConsumeKey();
+    if (!key) return;
+
+    XMFLOAT3 currentPos = camera.GetPosition();
+    XMFLOAT3 currentTarget = camera.GetTarget();
+    XMFLOAT3 currentUp = camera.GetUp();
+
+    XMVECTOR posVec = XMLoadFloat3(&currentPos);
+    XMVECTOR targetVec = XMLoadFloat3(&currentTarget);
+    XMVECTOR upVec = XMLoadFloat3(&currentUp);
+
+    XMVECTOR forward = XMVector3Normalize(XMVectorSubtract(targetVec, posVec));
+    XMVECTOR right = XMVector3Normalize(XMVector3Cross(upVec, forward));
+
+    char k = *key;
+    XMVECTOR movement = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+
+    if (k == 'w' || k == 'W') movement = XMVectorScale(forward, speed);
+    if (k == 's' || k == 'S') movement = XMVectorScale(forward, -speed);
+    if (k == 'a' || k == 'A') movement = XMVectorScale(right, -speed);
+    if (k == 'd' || k == 'D') movement = XMVectorScale(right, speed);
+
+    posVec = XMVectorAdd(posVec, movement);
+    targetVec = XMVectorAdd(targetVec, movement);
+
+    XMStoreFloat3(&currentPos, posVec);
+    XMStoreFloat3(&currentTarget, targetVec);
+
+    camera.SetPosition(currentPos);
+    camera.SetTarget(currentTarget);
+}
 
 int KeyPressHandler::HandleKeyPress(InputManager* inputManager, Camera camera, DirectX::XMFLOAT2 offset, float zoom, float speed, int currentMode) {
-    auto key = inputManager->GetAndConsumeKey();
+    auto key = "";
     int mode = currentMode;
 
     if (key) {
-        if (*key == 'w' || *key == 'W') offset.y -= speed * zoom;
-        if (*key == 's' || *key == 'S') offset.y += speed * zoom;
-        if (*key == 'a' || *key == 'A') offset.x -= speed * zoom;
-        if (*key == 'd' || *key == 'D') offset.x += speed * zoom;
+        // Handle Movement logic
+        ApplyFPSMovement(inputManager, camera, speed);
 
-        // Zooming controls
-        if (*key == 'z' || *key == 'Z') zoom *= 0.95f; // Zoom In
-        if (*key == 'x' || *key == 'X') zoom *= 1.05f; // Zoom Out
-
-        if (key == '1') mode = 1;
-        if (key == '2') mode = 2;
+        // Handle Mode switches (don't consume here if RegisterEngineCommands needs them)
+        if (*key == '1') mode = 1;
+        if (*key == '2') mode = 2;
     }
+
+    // Crucial: Update the view matrix after moving!
+    camera.Update();
+
     return mode;
 }
 
