@@ -1,12 +1,5 @@
 #include<Mandelbrot.h>
-
-
-Mandelbrot::Mandelbrot() {
-	x = 0;
-	y = 0;
-	iter = 0;
-}
-
+//  Mandelbrot iteration logic
 int Mandelbrot::MandelbrotIteration(double x0, double y0, int max_iter) {
 	if (x*x + y*y >= 4.0 || iter >= max_iter) {
 		return 0;

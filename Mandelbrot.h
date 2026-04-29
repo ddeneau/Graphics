@@ -1,12 +1,13 @@
+#pragma once	
 #include<math.h>
 class Mandelbrot {
 public:
-	double x;
-	double y;
-	int iter;
-	Mandelbrot();
-
+	Mandelbrot() = default;
 	int MandelbrotIteration(double x0, double y0, int max_iter);
 	double get_x();
 	double get_y();
+
+	double x;
+	double y;
+	int iter;
 };

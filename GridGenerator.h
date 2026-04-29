@@ -3,7 +3,9 @@
 #include "VertexBuffer.h"
 #include "Mandelbrot.h"
 
-class GridFactory {
+class Mandelbrot;
+
+class GridGenerator {
 public:
     // Generates the standard flat grid for Options B and C
     static std::vector<Vertex> CreateStandardGrid(int width, int height, int depth);

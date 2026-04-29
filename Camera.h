@@ -27,11 +27,13 @@ public:
     // Getters for the Scene manager
     DirectX::XMMATRIX GetView() const;
     DirectX::XMMATRIX GetProjection() const;
+	DirectX::XMFLOAT2 GetOffset() const { return offset; }
 
     // Public members for easy access by InputManager/main loop
     DirectX::XMFLOAT3 position; // Camera position in world space
     DirectX::XMFLOAT3 target;   // Point camera is looking at
     DirectX::XMFLOAT3 up;       // Up direction for camera orientation
+    DirectX::XMFLOAT2 offset;
 
     float pitch = 0.0f;
     float yaw = 0.0f;

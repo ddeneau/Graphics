@@ -1,20 +1,38 @@
 #pragma once
-#include <DirectXMath.h>
+#include <memory>
+#include <DirectXMath.h>     
+#include "Camera.h"          
 
-// alignas(16) ensures the structure starts on a 16-byte boundary in memory.
-// Constant Buffers must also be a total size that is a multiple of 16 bytes.
+class GraphicsManager;
+class Node;
+
 
 struct alignas(16) SceneData {
-    DirectX::XMMATRIX transform; // 64 bytes - (Naturally aligned)
+    DirectX::XMMATRIX transform;
 };
 
 struct alignas(16) FractalData {
-    // 1st 16-byte chunk
-    float time;                // 4 bytes
-    float zoom;                // 4 bytes
-    DirectX::XMFLOAT2 offset;  // 8 bytes
+    float time;
+    float zoom;
+    DirectX::XMFLOAT2 offset;
+    int renderMode;
+    float padding[3];
+};
 
-    // 2nd 16-byte chunk
-    int renderMode;            // 4 bytes (The toggle for Modes 1, 2, and 3)
-    float padding[3];          // 12 bytes of padding to reach the next 16-byte boundary
+class Scene {
+public:
+    Scene(GraphicsManager* gfx, float fov, float aspect, float nearZ, float farZ);
+
+    void Update(float deltaTime, float totalTime);
+    void Render();
+    void SetMode(int mode);
+
+    std::shared_ptr<Node> GetRoot() { return m_rootNode; }
+    Camera* GetCamera() { return m_camera.get(); }
+
+private:
+    GraphicsManager* m_gfx;
+    std::unique_ptr<Camera> m_camera;
+    std::shared_ptr<Node> m_rootNode;
+    FractalData m_globalFractalData;
 };

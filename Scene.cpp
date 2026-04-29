@@ -1,13 +1,29 @@
+#include "Scene.h"
 #include "Node.h"
+#include "GraphicsManager.h"
 
-void Node::AddChild(std::shared_ptr<Node> child) {
-    m_children.push_back(child);
+Scene::Scene(GraphicsManager* gfx, float fov, float aspect, float nearZ, float farZ)
+    : m_gfx(gfx)
+{
+
+    m_camera = std::make_unique<Camera>(fov, aspect, nearZ, farZ);
+
+    m_rootNode = std::make_shared<Node>();
+
+    m_globalFractalData = {};
+    m_globalFractalData.zoom = 1.0f;
+    m_globalFractalData.renderMode = 0;
 }
 
-void Node::Update(const DirectX::XMMATRIX& parentTransform) {
-    m_globalTransform = m_localTransform * parentTransform;
+void Scene::Update(float deltaTime, float totalTime) {
+    m_camera->Update();
+    m_globalFractalData.time = totalTime;
+}
 
-    for (auto& child : m_children) {
-        child->Update(m_globalTransform);
-    }
+void Scene::SetMode(int mode) {
+    m_globalFractalData.renderMode = mode;
+}
+
+void Scene::Render() {
+    m_gfx->DrawFrame(*m_camera, m_globalFractalData);
 }

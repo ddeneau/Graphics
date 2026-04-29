@@ -1,31 +1,40 @@
 #pragma once
-#include <vector>
-#include "ConstantBuffer.h"
+#include <memory>         // Required for unique_ptr
+#include <DirectXMath.h>  // Required for XMMATRIX
 #include "Graphics/Core/Device.h"
 #include "Graphics/Shaders/Shader.h"
-#include "Graphics/Shaders/ShaderLoader.h"
-#include "VertexBuffer.h" 
-#include "Mandelbrot.h" // CRITICAL: Only include .h files!
-#include "Scene.h"      // CRITICAL: Only include .h files!
+#include "Graphics/Shaders/ShaderLoader.h" // For LoadShaderFromFile
+#include "GridGenerator.h"
+#include <iostream>
+#include "VertexBuffer.h"
+#include "ConstantBuffer.h"
+#include "Scene.h"        // For SceneData and FractalData
+#include "Camera.h"
 
-// Handles rendering pipelines
 class GraphicsManager {
-
 public:
+    GraphicsManager() = default;
 
+    void LoadGraphics(Device* device);
+    void Initialize(Device* device);
+    void LoadShaders();
 
-	Device* device; 
-	std::unique_ptr<Shader> shader;
-	VertexBuffer vertexBuffer;
-	VertexBuffer flatBuffer;
-	VertexBuffer heightmapBuffer;
-	ConstantBuffer<SceneData> sceneBuffer;
-	ConstantBuffer<FractalData> fractalBuffer;
-	FractalData fractalData;
-	int renderMode;
+    // This signature MUST match the .cpp exactly
+    void DrawFrame(const Camera& camera, const FractalData& fd);
 
-	void LoadShaders();
-	void SwapVertexBuffer(int mode);
-	void BindShadersAndBuffers();
-	void DrawFrame(int mode);
-};
+private:
+    // These helpers MUST be declared here to be used in the .cpp
+    void UpdateConstantBuffers(const Camera& camera, const FractalData& fd);
+    void BindPipeline();
+    void RenderActiveMesh(int mode);
+    void CreateFractalResources();
+    // Data Members
+    Device* m_device = nullptr;
+    std::unique_ptr<Shader> m_shader;
+    std::unique_ptr<VertexBuffer> m_flatBuffer;
+    std::unique_ptr<VertexBuffer> m_heightmapBuffer;
+
+    // Use unique_ptr for these to avoid the "Deleted Constructor" error
+    std::unique_ptr<ConstantBuffer<SceneData>> m_sceneBuffer;
+    std::unique_ptr<ConstantBuffer<FractalData>> m_fractalBuffer;
+}; // <--- MAKE SURE THIS SEMICOLON IS HERE!
